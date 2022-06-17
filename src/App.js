@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './app.css';
+import './App.css';
 
 import AppRoutes from './components/AppRoutes';
 import Theme from './hoc/Theme';

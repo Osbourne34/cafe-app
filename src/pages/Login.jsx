@@ -1,25 +1,33 @@
 import React from 'react';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAdminLogin } from './../store/auth/authSlice';
+import { fetchLogin } from './../store/auth/authSlice';
 
-import { Container, Box, Typography } from '@mui/material';
+import { Container, Box, Typography, Alert } from '@mui/material';
 
 import AuthForm from '../components/AuthForm/AuthForm';
 import Loader from '../components/Loader';
 
-function Login() {
+const Login = () => {
     const dispatch = useDispatch();
-    const { error, loading } = useSelector((state) => state.auth);
+    const { error, loading, user, token } = useSelector((state) => state.auth);
 
     const { pathname } = useLocation();
     const isAdmin = pathname.includes('admin');
 
     const handleSubmit = (name, password) => {
         if (name.trim().length && password.trim().length) {
-            dispatch(fetchAdminLogin({ name, password }));
+            dispatch(
+                fetchLogin({
+                    body: {
+                        name,
+                        password,
+                    },
+                    whoLogin: isAdmin ? 'admin' : 'weiter',
+                })
+            );
         }
     };
 
@@ -30,16 +38,31 @@ function Login() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-            }}>
-            <Container maxWidth='sm'>
-                <Typography variant='h4' textAlign='center' mb={4}>
+            }}
+        >
+            <Container maxWidth="sm">
+                <Typography variant="h4" textAlign="center" mb={4}>
                     {isAdmin ? 'Войти как Админ' : 'Войти как Официант'}
                 </Typography>
+
+                {error && (
+                    <Alert variant="filled" severity="error" sx={{ mb: 4 }}>
+                        {error}
+                    </Alert>
+                )}
+
+                {user && token && (
+                    <Navigate
+                        to={isAdmin ? '/admin' : '/waiter'}
+                        replace={true}
+                    />
+                )}
+
                 <AuthForm handleSubmit={handleSubmit} />
                 <Loader loading={loading} />
             </Container>
         </Box>
     );
-}
+};
 
 export default Login;

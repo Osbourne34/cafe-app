@@ -12,24 +12,24 @@ const AuthForm = ({ handleSubmit }) => {
     };
 
     return (
-        <Box onSubmit={submit} component='form'>
+        <Box onSubmit={submit} component="form">
             <TextField
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 fullWidth
                 sx={{ mb: 4 }}
-                label='Name'
-                variant='outlined'
+                label="Name"
+                variant="outlined"
             />
             <TextField
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 fullWidth
                 sx={{ mb: 4 }}
-                label='Password'
-                variant='outlined'
+                label="Password"
+                variant="outlined"
             />
-            <Button fullWidth variant='contained' size='large' type='sumibt'>
+            <Button fullWidth variant="contained" size="large" type="sumibt">
                 Войти
             </Button>
         </Box>
